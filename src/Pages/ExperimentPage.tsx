@@ -1,118 +1,98 @@
-import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { experimentData } from "../data/experimentData";
 
-const languages = [
-  { name: "Python", icon: "🐍" },
-  { name: "Java", icon: "☕" },
-  { name: "C++", icon: "" },
-];
+function ExperimentPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-function CodeEditorPanel() {
-  const [selectedLang, setSelectedLang] = useState("Python");
-  const [code, setCode] = useState("");
-  const [output, setOutput] = useState("");
+  const experiment = experimentData
+    .flatMap((topic) => topic.questions)
+    .find((q) => q.id === Number(id));
 
-  const runCode = () => {
-    setOutput("Code executed successfully! (Mock Output)");
-  };
-
-  const saveCode = () => {
-    localStorage.setItem("savedCode", code);
-    alert(" Code Saved!");
-  };
+  if (!experiment) {
+    return <h1 className="text-center mt-10 text-red-500">Experiment Not Found</h1>;
+  }
 
   return (
-    <div className="bg-gray-900 text-white p-5 rounded-2xl shadow flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6">
 
-      <div className="flex gap-3 mb-4">
-        {languages.map((lang) => (
-          <button
-            key={lang.name}
-            onClick={() => setSelectedLang(lang.name)}
-            className={`px-4 py-2 rounded-lg border flex items-center gap-2 transition ${
-              selectedLang === lang.name
-                ? "bg-indigo-700 text-white"
-                : "bg-gray-800 hover:bg-gray-700 border-gray-700"
-            }`}
-          >
-            <span>{lang.icon}</span>
-            {lang.name}
-          </button>
-        ))}
-      </div>
-
-      <textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="w-full flex-1 p-4 bg-gray-800 border border-gray-700 rounded-lg font-mono text-sm mb-4 text-green-300"
-        placeholder={`// Write ${selectedLang} code here`}
-      />
-
-      <div className="flex gap-4 mb-4">
-        <button
-          onClick={runCode}
-          className="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700"
-        >
-           Run Code
-        </button>
-        <button
-          onClick={saveCode}
-          className="bg-indigo-700 text-white px-5 py-2 rounded-lg hover:bg-indigo-800"
-        >
-           Save
-        </button>
-      </div>
-
-      <div className="bg-black text-green-400 p-4 rounded-lg h-40 overflow-auto text-sm font-mono border border-gray-700">
-        {output || "// Output will appear here"}
-      </div>
-    </div>
-  );
-}
-
-export default function ExperimentPage() {
-  return (
-    <div className="min-h-screen bg-white p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-indigo-700 border-l-4 border-indigo-700 pl-3">
-          Find Maximum Element
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-400">
+          {experiment.title}
         </h1>
-        <button className="bg-indigo-700 text-white px-4 py-2 rounded-lg hover:bg-indigo-800">
+
+        <button
+          onClick={() => navigate("/experiments")}
+          className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg"
+        >
           ← Back
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="max-w-4xl mx-auto bg-gray-900 p-8 rounded-2xl shadow-xl space-y-6">
 
-        <div className="bg-gray-50 p-5 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-3">Description</h2>
-          <p className="text-gray-700 mb-4">
-            Find the maximum element in an array.
-          </p>
+        <div className="bg-gray-800 p-4 rounded-lg">
+          <p className="text-sm text-gray-400">Course Outcome</p>
+          <p className="text-lg font-semibold">{experiment.co}</p>
+        </div>
 
-          <p className="mb-2">
-            <span className="font-semibold">Difficulty:</span>
-            <span className="ml-2 text-green-600 font-medium">Easy</span>
-          </p>
+        <div>
+          <h2 className="text-xl font-semibold text-blue-400 mb-2">Aim</h2>
+          <p className="text-gray-300">{experiment.aim}</p>
+        </div>
 
-          <div className="mt-4">
-            <h3 className="font-semibold mb-2">Example:</h3>
-            <div className="bg-gray-200 p-3 rounded-lg text-sm">
-              Input: [2,7,11,15] <br /> Target = 9 <br /> Output: [0,1]
-            </div>
-          </div>
+        <div>
+          <h2 className="text-xl font-semibold text-blue-400 mb-2">Theory</h2>
+          <p className="text-gray-300 leading-relaxed">{experiment.theory}</p>
+        </div>
 
-          <div className="mt-6">
-            <h3 className="font-semibold mb-2">Test Cases</h3>
-            <textarea
-              className="w-full p-3 border rounded-lg text-sm"
-              rows={4}
-              placeholder="Enter custom test cases..."
-            />
+        <div>
+          <h2 className="text-xl font-semibold text-blue-400 mb-2">Procedure</h2>
+          <ul className="space-y-2">
+            {experiment.procedure.map((step, index) => (
+              <li
+                key={index}
+                className="bg-gray-800 p-3 rounded-lg border-l-4 border-green-500"
+              >
+                Step {index + 1}: {step}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-semibold text-blue-400 mb-2">Result</h2>
+          <div className="bg-green-900/40 border border-green-500 p-4 rounded-lg">
+            {experiment.result}
           </div>
         </div>
 
-        <CodeEditorPanel />
+        <div>
+          <h2 className="text-xl font-semibold text-blue-400 mb-2">
+            Viva Questions
+          </h2>
+          <ul className="list-disc ml-5 text-gray-300 space-y-1">
+            <li>What is Docker?</li>
+            <li>What is a container?</li>
+            <li>Difference between Docker image and container?</li>
+            <li>What is Dockerfile?</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-semibold text-blue-400 mb-2">
+            Important Commands
+          </h2>
+          <div className="bg-black p-4 rounded-lg text-green-400 text-sm font-mono">
+            docker --version <br />
+            docker build -t app . <br />
+            docker run -p 8080:80 app
+          </div>
+        </div>
+
       </div>
     </div>
   );
 }
+
+export default ExperimentPage;
