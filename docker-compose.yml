@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+    command: npm run dev
+    restart: unless-stopped
+
+  # Add your frontend here later if you want to run both together
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"

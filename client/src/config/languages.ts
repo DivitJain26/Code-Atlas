@@ -6,23 +6,12 @@ export const LANGUAGES: LanguageConfig[] = [
     value: 'python',
     monacoLanguage: 'python',
     icon: '🐍',
-    defaultCode: `# Python Code Editor
-def greet(name):
-    return f"Hello, {name}!"
+    defaultCode: `# Hello World in Python
+print("Hello, World!")
 
-def main():
-    print(greet("World"))
-    print("Welcome to the Online Compiler!")
-
-    # Example: Calculate factorial
-    n = 5
-    factorial = 1
-    for i in range(1, n + 1):
-        factorial *= i
-    print(f"Factorial of {n} is {factorial}")
-
-if __name__ == "__main__":
-    main()
+# Try modifying this code and click "Run Code"
+name = input("Enter your name: ")
+print(f"Hello, {name}! Welcome to CodeRunner 🚀")
 `,
   },
   {
@@ -30,27 +19,19 @@ if __name__ == "__main__":
     value: 'cpp',
     monacoLanguage: 'cpp',
     icon: '⚡',
-    defaultCode: `// C++ Code Editor
+    defaultCode: `// Hello World in C++
 #include <iostream>
 #include <string>
 using namespace std;
 
-string greet(string name) {
-    return "Hello, " + name + "!";
-}
-
 int main() {
-    cout << greet("World") << endl;
-    cout << "Welcome to the Online Compiler!" << endl;
-
-    // Example: Calculate factorial
-    int n = 5;
-    int factorial = 1;
-    for (int i = 1; i <= n; i++) {
-        factorial *= i;
-    }
-    cout << "Factorial of " << n << " is " << factorial << endl;
-
+    cout << "Hello, World!" << endl;
+    
+    string name;
+    cout << "Enter your name: ";
+    getline(cin, name);
+    cout << "Hello, " << name << "! Welcome to CodeRunner 🚀" << endl;
+    
     return 0;
 }
 `,
@@ -60,23 +41,13 @@ int main() {
     value: 'java',
     monacoLanguage: 'java',
     icon: '☕',
-    defaultCode: `// Java Code Editor
+    defaultCode: `// Hello World in Java
 public class Main {
-    public static String greet(String name) {
-        return "Hello, " + name + "!";
-    }
-
     public static void main(String[] args) {
-        System.out.println(greet("World"));
-        System.out.println("Welcome to the Online Compiler!");
-
-        // Example: Calculate factorial
-        int n = 5;
-        int factorial = 1;
-        for (int i = 1; i <= n; i++) {
-            factorial *= i;
-        }
-        System.out.println("Factorial of " + n + " is " + factorial);
+        System.out.println("Hello, World!");
+        
+        // Note: Java input support will be added later
+        System.out.println("Welcome to CodeRunner 🚀");
     }
 }
 `,
