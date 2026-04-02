@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { experimentData } from "../data/experimentData";
+import { experimentData } from "../data/experiments";
 
 function ExperimentPage() {
   const { id } = useParams();
