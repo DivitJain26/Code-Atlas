@@ -79,7 +79,7 @@ git remote add upstream https://github.com/DivitJain26/Code-Atlas.git
 After cloning the repository, install the required Node.js packages:
 
 ```bash
-npm install
+npm run install:all
 ```
 
 This will install all frontend dependencies defined in `package.json`.

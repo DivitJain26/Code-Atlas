@@ -10,48 +10,46 @@ const LandingPage: React.FC = () => {
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-indigo-700/10 via-white to-transparent -z-10" />
 
       {/* Navbar */}
-        <Navbar />
+      <Navbar />
 
       {/* Hero Section */}
       <section className="px-10 pt-24 pb-16 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left */}
         <div>
           <h2 className="text-5xl font-bold leading-tight mb-6">
-            Code Without
-            <span className="text-indigo-700"> Setup Barriers</span>
+            Master Coding
+            <span className="text-indigo-700"> One Problem at a Time</span>
           </h2>
 
           <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-            Code-Atlas delivers a fully containerized lab environment for CBAD
-            assignments—ensuring every student works in a consistent, secure,
-            and reproducible system.
+            Code-Atlas is your competitive programming platform to practice,
+            learn, and level up. Solve curated problems, run code instantly,
+            and prepare for technical interviews with confidence.
           </p>
 
           <div className="flex gap-4">
-            <Link to="/compiler">
+            <Link to="/experiments">
               <button className="bg-indigo-700 text-white px-7 py-3 rounded-lg font-medium hover:bg-indigo-800 transition shadow-md">
-                Start Coding
+                Solve Problems
               </button>
             </Link>
 
-            <button className="border border-gray-300 px-7 py-3 rounded-lg hover:border-indigo-700 hover:text-indigo-700 transition">
-              View Demo
-            </button>
+            
           </div>
 
           {/* Stats */}
           <div className="flex gap-10 mt-10 text-sm text-gray-600">
             <div>
-              <p className="text-2xl font-bold text-black">100%</p>
-              <p>Consistent Environments</p>
+              <p className="text-2xl font-bold text-black">1000+</p>
+              <p>Practice Problems</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-black">0 Setup</p>
-              <p>Required</p>
+              <p className="text-2xl font-bold text-black">Real-time</p>
+              <p>Code Execution</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-black">Secure</p>
-              <p>Execution</p>
+              <p className="text-2xl font-bold text-black">Global</p>
+              <p>Leaderboard</p>
             </div>
           </div>
         </div>
@@ -65,18 +63,24 @@ const LandingPage: React.FC = () => {
           </div>
 
           <pre className="text-green-400 leading-relaxed">
-{`# Dockerfile
-FROM node:18
-
-WORKDIR /app
-COPY . .
-RUN npm install
-
-CMD ["npm", "run", "dev"]`}
+{`// Two Sum Problem
+function twoSum(nums, target) {
+  const map = new Map();
+  
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i];
+    
+    if (map.has(complement)) {
+      return [map.get(complement), i];
+    }
+    
+    map.set(nums[i], i);
+  }
+}`}
           </pre>
 
           <p className="text-xs text-gray-400 mt-4">
-            Running inside isolated container...
+            Code compiled successfully. Runtime: 2ms
           </p>
         </div>
       </section>
@@ -85,38 +89,38 @@ CMD ["npm", "run", "dev"]`}
       <section className="py-20 px-10 bg-gray-50">
         <div className="max-w-6xl mx-auto text-center mb-14">
           <h3 className="text-3xl font-semibold mb-4">
-            Built for Academic Excellence
+            Everything You Need to Excel
           </h3>
           <p className="text-gray-600">
-            A platform tailored for structured learning and efficient lab work.
+            Designed for students, developers, and interview preparation.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {[
             {
-              title: "Isolated Containers",
-              desc: "Every student runs code in an identical environment using containerization.",
+              title: "Curated Problems",
+              desc: "Practice problems ranging from easy to hard across multiple topics.",
             },
             {
               title: "Instant Execution",
-              desc: "Launch coding environments instantly without manual configuration.",
+              desc: "Run your code in multiple languages with real-time results.",
             },
             {
-              title: "Secure Sandbox",
-              desc: "Execute programs safely within controlled, sandboxed containers.",
+              title: "Test Cases",
+              desc: "Validate your solutions with custom and hidden test cases.",
             },
             {
-              title: "Scalable System",
-              desc: "Handles multiple students concurrently with optimized performance.",
+              title: "Contests",
+              desc: "Participate in timed contests and challenge yourself.",
             },
             {
-              title: "Instructor Control",
-              desc: "Simplified assignment distribution and evaluation workflows.",
+              title: "Leaderboard",
+              desc: "Track your ranking and compare with other coders.",
             },
             {
-              title: "Modern Stack",
-              desc: "Powered by React, TypeScript, Tailwind, and container tech.",
+              title: "Interview Prep",
+              desc: "Prepare with frequently asked interview questions.",
             },
           ].map((feature, i) => (
             <div
@@ -136,10 +140,10 @@ CMD ["npm", "run", "dev"]`}
       <section className="py-20 px-10 max-w-6xl mx-auto">
         <div className="text-center mb-14">
           <h3 className="text-3xl font-semibold mb-4">
-            Simple Workflow
+            How It Works
           </h3>
           <p className="text-gray-600">
-            Focus on coding, not environment setup.
+            Start solving in minutes.
           </p>
         </div>
 
@@ -147,18 +151,18 @@ CMD ["npm", "run", "dev"]`}
           {[
             {
               step: "01",
-              title: "Login",
-              desc: "Securely access your dashboard.",
+              title: "Choose Problem",
+              desc: "Pick a problem based on difficulty or topic.",
             },
             {
               step: "02",
-              title: "Choose Lab",
-              desc: "Select your assignment.",
+              title: "Write Code",
+              desc: "Solve using your preferred programming language.",
             },
             {
               step: "03",
-              title: "Execute",
-              desc: "Run code inside containers instantly.",
+              title: "Submit & Improve",
+              desc: "Run test cases, optimize, and climb the ranks.",
             },
           ].map((item, i) => (
             <div key={i}>
@@ -175,8 +179,7 @@ CMD ["npm", "run", "dev"]`}
       </section>
 
       {/* Footer */}
-        <Footer />
-      
+      <Footer />
     </div>
   );
 };
