@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { executePython } = require('./executors/python');
+const { executePython } = require('./services/python');
 
 const app = express();
 const PORT = process.env.PORT || 3001;

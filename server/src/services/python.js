@@ -1,10 +1,10 @@
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 const EXECUTION_TIMEOUT_MS = 30000;   // 10 seconds
 const MEMORY_LIMIT_MB = '512m';
 const CPU_LIMIT = '1';
 
-function executePython(code, input = '') {
+export const executePython = (code, input = '') => {
   return new Promise((resolve, reject) => {
     // Unique delimiters to prevent any collision with user code/input
     const codeDelimiter = `CODE_DELIM_${Math.random().toString(36).slice(2)}`;
@@ -62,5 +62,3 @@ python -u /tmp/script.py < /tmp/input.txt`;
     });
   });
 }
-
-module.exports = { executePython };
