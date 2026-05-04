@@ -1,18 +1,22 @@
-export const exp1 = {
+const exp1 = {
   id: 1,
-  title: "Install Docker and Verify Installation",
-  co: "CO1",
-  aim: "To install Docker on the system and verify its installation.",
-  theory:
-    "Docker is a containerization platform that allows developers to package applications with all dependencies into a standardized unit called a container.",
-  procedure: [
-    "Download Docker Desktop from official website",
-    "Install Docker and restart system",
-    "Open terminal or command prompt",
-    "Run command: docker --version",
-    "Run command: docker run hello-world",
-  ],
-  result: "Docker installed successfully and hello-world container runs.",
+  title: "Find Maximum Element",
+  difficulty: "Easy",
+  description: `
+Given an array of integers, find the maximum element.
 
-  image: "src/assets/docker-installation.png"
+Return the largest value present in the array.
+  `,
+  inputFormat: `
+First line contains integer n (size of array)
+Second line contains n space-separated integers
+  `,
+  outputFormat: `
+Print the maximum element
+  `,
+  example: {
+    input: "5\n1 3 5 2 4",
+    output: "5",
+  },
 };
+export default exp1;

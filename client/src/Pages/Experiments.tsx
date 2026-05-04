@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { experimentData } from "../data/experimentData";
+import { getProblemById } from "../utils/getProblem.ts";
 
 const Experiments: React.FC = () => {
   const navigate = useNavigate();
@@ -11,12 +12,15 @@ const Experiments: React.FC = () => {
   const filteredData = experimentData.map((section) => ({
     ...section,
     questions: section.questions.filter((q) => {
-      const matchSearch = q.title
+      const problem = getProblemById(q.id);
+      if (!problem) return false;
+
+      const matchSearch = problem.title
         .toLowerCase()
         .includes(search.toLowerCase());
 
       const matchFilter =
-        filter === "All" || q.difficulty === filter;
+        filter === "All" || problem.difficulty === filter;
 
       return matchSearch && matchFilter;
     }),
@@ -24,7 +28,6 @@ const Experiments: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white p-8">
-
       <h1 className="text-3xl font-bold text-indigo-700 mb-6">
         Experiments
       </h1>
@@ -53,48 +56,49 @@ const Experiments: React.FC = () => {
 
       {filteredData.map((section) => (
         <div key={section.topic} className="mb-8">
-
           <h2 className="text-xl font-bold text-indigo-700 mb-4 border-b pb-2">
             {section.topic}
           </h2>
 
-          {section.questions.map((q) => (
-            <div
-              key={q.id}
-              onClick={() => navigate(`/compiler`)}
-              className="flex justify-between items-center p-4 mb-3 rounded-xl border hover:bg-indigo-50 cursor-pointer"
-            >
-              <div>
-                <h3 className="font-semibold">{q.title}</h3>
+          {section.questions.map((q) => {
+            const problem = getProblemById(q.id);
+
+            return (
+              <div
+                key={q.id}
+                onClick={() => navigate(`/experiment/${q.id}`)}
+                className="flex justify-between items-center p-4 mb-3 rounded-xl border hover:bg-indigo-50 cursor-pointer"
+              >
+                <div>
+                  <h3 className="font-semibold">{problem?.title}</h3>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      problem?.difficulty === "Easy"
+                        ? "bg-green-100 text-green-700"
+                        : problem?.difficulty === "Medium"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {problem?.difficulty}
+                  </span>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/experiment/${q.id}`);
+                    }}
+                    className="bg-indigo-700 text-white px-4 py-1 rounded"
+                  >
+                    Solve
+                  </button>
+                </div>
               </div>
-
-              <div className="flex items-center gap-3">
-
-                <span
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    q.difficulty === "Easy"
-                      ? "bg-green-100 text-green-700"
-                      : q.difficulty === "Medium"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {q.difficulty}
-                </span>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/compiler`);
-                  }}
-                  className="bg-indigo-700 text-white px-4 py-1 rounded"
-                >
-                  Solve
-                </button>
-
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ))}
     </div>
