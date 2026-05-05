@@ -1,35 +1,66 @@
-import { useState, ChangeEvent, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useAuth } from '../context/AuthContext.js';
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 interface LoginForm {
   email: string;
   password: string;
 }
 
+interface locationState {
+  from?: {
+    pathname: string;
+  }
+}
+
 export default function Login() {
-  const [formData, setFormData] = useState<LoginForm>({
-    email: "",
-    password: "",
-  });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const { state, login } = useAuth();
+  const { isLoading, isAuthenticated } = state;
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Login Data:", formData);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = (location.state as locationState)?.from?.pathname || '/dashboard';
+
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    setError,
+    formState: { errors },
+  } = useForm<LoginForm>();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
+
+  const onSubmit = async (data: LoginForm) => {
+    clearErrors();
+    try {
+      await login(data.email, data.password);
+
+    } catch (error: unknown) {
+      // Assuming `err.message` has the backend error message
+
+      setError('root', {
+        type: 'manual',
+        message: error instanceof Error
+          ? error.message || 'Login failed. Please try again.'
+          : 'An unknown error occurred.',
+      });
+    };
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      
+
       {/* Card */}
       <div className="w-full max-w-md border border-gray-200 rounded-2xl shadow-md p-8">
-        
+
         {/* Heading */}
         <h2 className="text-3xl font-bold text-center text-indigo-700 mb-2">
           Welcome Back
@@ -38,9 +69,13 @@ export default function Login() {
           Login to your account
         </p>
 
+        {errors.root && (
+          <p className="mt-0 text-sm text-red-600 text-center">{errors.root.message}</p>
+        )}
+        
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -48,13 +83,15 @@ export default function Login() {
             </label>
             <input
               type="email"
-              name="email"
               placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
+              {...register("email", { required: "Email is required" })}
               className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-700"
-              required
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password */}
@@ -64,13 +101,16 @@ export default function Login() {
             </label>
             <input
               type="password"
-              name="password"
               placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
+              {...register("password", { required: "Password is required" })}
               className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-700"
               required
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Forgot Password */}
