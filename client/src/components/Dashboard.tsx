@@ -1,8 +1,19 @@
-import { Code2, History, Play, User } from "lucide-react";
+import { Code2, History, Play, User, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // navigate("/login"); // redirect after logout
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex">
@@ -28,6 +39,12 @@ export default function Dashboard() {
 
           <div className="flex items-center gap-2 hover:text-white cursor-pointer">
             <History size={18} /> History
+          </div>
+          <div
+            className="flex items-center gap-2 hover:text-red-400 cursor-pointer mt-6"
+            onClick={handleLogout}
+          >
+            <LogOut size={18} /> Logout
           </div>
         </nav>
       </aside>

@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import api from '../utils/axios.ts';
+import api from '../utils/axios';
 
 //------------------Types--------------------
 interface User {
@@ -16,7 +16,7 @@ interface AuthState {
     error: string | null,
 }
 
-interface AuthContextType {
+export interface AuthContextType {
     state: AuthState,
     login: (email: string, password: string) => Promise<void>,
     register: (name: string, email: string, password: string, confirmPassword: string, role: string) => Promise<void>,
@@ -33,7 +33,7 @@ const initialState = {
 };
 
 //-------------------- Context Creation --------------------
-const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
     state: initialState,
     login: async () => { },
     register: async () => { },
