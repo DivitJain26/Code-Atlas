@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { authAPI } from "../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 interface SignupForm {
   name: string;
@@ -9,6 +11,7 @@ interface SignupForm {
 }
 
 export default function Signup() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,8 +19,18 @@ export default function Signup() {
     formState: { errors },
   } = useForm<SignupForm>();
 
-  const onSubmit = (data: SignupForm) => {
-    console.log("Signup Data:", data);
+  const onSubmit = async(data: SignupForm) => {
+      try {
+    const res = await authAPI.register(data);
+
+    console.log("Signup success:", res.data);
+
+    // optional: redirect after signup
+    navigate("/dashboard");
+
+  } catch (err: any) {
+    console.error("Signup failed:", err.response?.data?.error || err.message);
+  }
   };
 
   const password = watch("password");

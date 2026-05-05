@@ -1,46 +1,73 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
+// -------------------- Axios Instance --------------------
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api',
+    baseURL: `${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000'}/api`,
     withCredentials: true, // Important for cookies
 });
 
-// console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL);
-
-// Extend AxiosRequestConfig to support custom _retry field
+// -------------------- Extend Config --------------------
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
     _retry?: boolean;
 }
 
-// Intercept responses
+// -------------------- Interceptor --------------------
 api.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
         const originalRequest = error.config as CustomAxiosRequestConfig;
 
-        // If access token expired and this is not a refresh request already
         if (
-            error.response?.status === 401 
-            && !originalRequest._retry
-            && !originalRequest.url?.includes('/auth/refresh')
+            error.response?.status === 401 &&
+            originalRequest &&
+            !originalRequest._retry &&
+            !originalRequest.url?.includes('/auth/refresh')
         ) {
             originalRequest._retry = true;
 
             try {
-                // Attempt to refresh token
                 await api.post('/auth/refresh', {}, { withCredentials: true });
-                // Retry the original request
                 return api(originalRequest);
             } catch (refreshError) {
-                // Redirect to login or return error
                 console.error('Refresh token failed', refreshError);
-                // window.location.href = '/login';
                 return Promise.reject(refreshError);
             }
         }
 
         return Promise.reject(error);
-    } 
+    }
 );
 
+// -------------------- Types --------------------
+interface RegisterData {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+interface LoginData {
+    email: string;
+    password: string;
+}
+
+// -------------------- Auth API --------------------
+export const authAPI = {
+    register: (data: RegisterData) =>
+        api.post('/auth/register', data),
+
+    login: (data: LoginData) =>
+        api.post('/auth/login', data),
+
+    logout: () =>
+        api.post('/auth/logout'),
+
+    refresh: () =>
+        api.post('/auth/refresh'),
+
+    getProfile: () =>
+        api.get('/auth/me'),
+};
+
+// -------------------- Export --------------------
 export default api;
