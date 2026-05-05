@@ -26,7 +26,7 @@ export default function Signup() {
     console.log("Signup success:", res.data);
 
     // optional: redirect after signup
-    navigate("/dashboard");
+    navigate("/experiments");
 
   } catch (err: any) {
     console.error("Signup failed:", err.response?.data?.error || err.message);
