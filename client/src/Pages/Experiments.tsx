@@ -2,9 +2,21 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { experimentData } from "../data/experimentData";
 import { getProblemById } from "../utils/getProblem.ts";
+import { useAuth } from "../hooks/useAuth";
+
 
 const Experiments: React.FC = () => {
   const navigate = useNavigate();
+    const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // navigate("/login"); // redirect after logout
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -28,9 +40,18 @@ const Experiments: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white p-8">
-      <h1 className="text-3xl font-bold text-indigo-700 mb-6">
-        Experiments
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+  <h1 className="text-3xl font-bold text-indigo-700">
+    Experiments
+  </h1>
+
+  <button
+    onClick={handleLogout}
+    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+  >
+    Logout
+  </button>
+</div>
 
       {/* SEARCH + FILTER */}
       <div className="flex gap-4 mb-6">

@@ -30,7 +30,7 @@ function App() {
     setExecutionTime(undefined);
 
     try {
-      const res = await fetch('http://localhost:3001/api/execute', {
+      const res = await fetch('http://localhost:5000/api/execute/python', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -51,7 +51,7 @@ function App() {
         setOutput(data.error || 'Execution failed');
       }
     } catch (err: any) {
-      setOutput(`❌ Connection error: ${err.message || 'Could not reach backend at http://localhost:3001'}`);
+      setOutput(`❌ Connection error: ${err.message || 'Could not reach backend at http://localhost:5000'}`);
     } finally {
       setIsExecuting(false);
     }

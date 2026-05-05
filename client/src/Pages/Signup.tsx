@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { authAPI } from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 
+
 interface SignupForm {
   name: string;
   email: string;
@@ -21,11 +22,10 @@ export default function Signup() {
 
   const onSubmit = async(data: SignupForm) => {
       try {
-    const res = await authAPI.register(data);
+    await authAPI.register(data);
 
-    console.log("Signup success:", res.data);
-
-    // optional: redirect after signup
+    console.log("Signup success:");
+    alert("Signup successful! Please login.");
     navigate("/experiments");
 
   } catch (err: any) {

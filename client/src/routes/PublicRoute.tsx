@@ -10,7 +10,7 @@ const PublicRoute = () => {
         return <LoadingSpinner />;
     }
 
-    return !isAuthenticated ? <Outlet /> : <Navigate to="/dashboard" replace />;
+    return !isAuthenticated ? <Outlet /> : <Navigate to="/experiments" replace />;
 };
 
 export default PublicRoute;

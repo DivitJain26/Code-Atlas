@@ -54,7 +54,7 @@ export const register = async (req, res) => {
 
         // Password validation
         if (password.length < 8) {
-            return res.status(403).json({ error: 'Password must be at least 6 characters long' });
+            return res.status(403).json({ error: 'Password must be at least 8 characters long' });
         }
 
         // create new user
