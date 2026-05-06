@@ -6,6 +6,8 @@ services:
       - "5000:5000"
     env_file:
       - ./server/.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   frontend:
     build: ./client
